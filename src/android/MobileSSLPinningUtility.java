@@ -39,7 +39,7 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
   public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
     //get all required items
     String rUrl = args.getString(0);
-    String request = args.getString(1);
+    String rRequest = args.getString(1);
     String rFolder = args.getString(2);
     String rFile = args.getString(3);
     String rPassword = args.getString(4);
@@ -66,7 +66,7 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
           SSLContext sslContext = getSSLContext(resId, rPassword);
           //perform the GET request
           jsonObject.put("status", "success");
-          jsonObject.put("response", this.performHTTPSPostConnection(sslContext, rUrl));
+          jsonObject.put("response", this.performHTTPSPostConnection(sslContext, rUrl, rRequest));
           return true;
         }
       }
@@ -178,7 +178,7 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
 
           //init the trust manufacturer factory
           TrustManagerFactory tmf = TrustManagerFactory.getInstance("X509");
-          tmf.init(trustStore);
+          tmf.init(trusted);
           TrustManager[] trustManagers = tmf.getTrustManagers();
 
           /*//init keystore for pkcs type for the ssl connection; load the file
