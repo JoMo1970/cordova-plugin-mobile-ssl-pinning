@@ -229,9 +229,9 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
           httpsURLConnection.setHostnameVerifier(new HostnameVerifier() {
             @Override
             public boolean verify(String hostname, SSLSession session) {
-              /*HostnameVerifier hv = HttpsURLConnection.getDefaultHostnameVerifier();
-              return hv.verify("*.myglobaldata.com", session);*/
-              return true;
+              HostnameVerifier hv = HttpsURLConnection.getDefaultHostnameVerifier();
+              return hv.verify("*.myglobaldata.com", session);
+              //return true;
             }
           });
           httpsURLConnection.setSSLSocketFactory(sslContext.getSocketFactory());
