@@ -177,6 +177,7 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
 
   //this function will init the ssl context
   private SSLContext getSSLContext(int resId, String password) {
+      Log.d("INFO", "Creating SSLContext from " + resId + " and " + password);
       try {
           //init trust store from input stream
           KeyStore trusted = KeyStore.getInstance("BKS");
