@@ -28,6 +28,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLSession;
 
 public class MobileSSLPinningUtility extends CordovaPlugin {
 
