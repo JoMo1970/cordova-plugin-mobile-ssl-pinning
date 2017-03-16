@@ -178,19 +178,18 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
   //this function will init the ssl context
   private SSLContext getSSLContext(int resId, String password) {
       try {
-          //init trust store
+          //init trust store from input stream
           KeyStore trusted = KeyStore.getInstance("BKS");
           InputStream in = this.cordova.getActivity().getResources().openRawResource(resId);
-          try {
-              trusted.load(in, password.toCharArray());
-          } finally {
-              in.close();
-          }
+          trusted.load(in, password.toCharArray());
+          in.close();
+          Log.d("INFO", "Trust Store initialized");
 
           //init the trust manufacturer factory
           TrustManagerFactory tmf = TrustManagerFactory.getInstance("X509");
           tmf.init(trusted);
           TrustManager[] trustManagers = tmf.getTrustManagers();
+          Log.d("INFO", "Trust manager initialized");
 
           /*//init keystore for pkcs type for the ssl connection; load the file
           KeyStore keyStore = KeyStore.getInstance("PKCS12");
@@ -204,6 +203,7 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
           //init ssl context
           SSLContext sslContext = SSLContext.getInstance("TLS");
           sslContext.init(null, trustManagers, null);
+          Log.d("INFO", "SSLContext initialized");
           return sslContext;
       } catch (Exception ex) {
           Log.d("INFO", "Exception when creating SSLContext: " + ex.toString());
