@@ -215,6 +215,7 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
   //this function will perform the http connection
   private String performHTTPSGetConnection(SSLContext sslContext, String url) {
       //init https connection and jsonResponse object
+      Log.d("INFO", "Performing HTTP GET Connection");
       HttpsURLConnection httpsURLConnection = null;
       try {
           //init local variables
@@ -227,6 +228,7 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
           httpsURLConnection.setRequestMethod("GET");
           httpsURLConnection.setConnectTimeout(30000);
           httpsURLConnection.setReadTimeout(30000);
+          Log.d("INFO", "Return response from GET request");
           return parseResponseStream(httpsURLConnection.getInputStream());
       } catch (Exception ex) {
           Log.d("INFO", ex.toString());
@@ -243,6 +245,7 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
   //this function will perform the http connection
   private String performHTTPSPostConnection(SSLContext sslContext, String url, String request) {
       //init https connection and jsonResponse object
+      Log.d("INFO", "Performing HTTP POST Connection");
       HttpsURLConnection httpsURLConnection = null;
       try {
           //init local variables
@@ -260,11 +263,13 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
           httpsURLConnection.setDoInput(true);
 
           //write the data to the server
+          Log.d("INFO", "Writing POST body to stream");
           OutputStream os = httpsURLConnection.getOutputStream();
           os.write(request.getBytes("UTF-8"));
           os.close();
 
           //returm the data
+          Log.d("INFO", "Returning response from POST request");
           return parseResponseStream(httpsURLConnection.getInputStream());
       } catch (Exception ex) {
           Log.d("INFO", ex.toString());
