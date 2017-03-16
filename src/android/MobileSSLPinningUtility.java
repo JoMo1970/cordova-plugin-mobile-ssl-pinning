@@ -36,6 +36,7 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
   private final String PERFORMGETREQUESTPARAM = "GetRequest";
   private final String PERFORMPOSTREQUESTPARAM = "PostRequest";
   private String rHostName = "";
+  private String rAuthorization = "";
 
 
   @Override
@@ -47,6 +48,7 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
     String rFile = args.getString(3);
     String rPassword = args.getString(4);
     this.rHostName = args.getString(5);
+    this.rAuthorization = getJsonValue(args.getString(5), "access_token");
     JSONObject jsonObject = new JSONObject();
 
     //check to see if the installed directory exists
@@ -216,8 +218,20 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
       }
   }
 
+  //this function will parse out the json string and retrieve the passed variables
+  private String getJsonValue(String jsonString, String jsonKey) {
+    try {
+      //parse the incoming json String
+      JSONObject incomingJSON = new JSONObject(jsonString);
+      return incomingJSON.getString(jsonKey);
+    }
+    catch(Exception ex) {
+      return "";
+    }
+  }
+
   //this function will perform the http connection
-  private String performHTTPSGetConnection(SSLContext sslContext, String url, String hostName) {
+  private String performHTTPSGetConnection(SSLContext sslContext, String url, String hostName, String authJson) {
       //init https connection and jsonResponse object
       Log.d("INFO", "Performing HTTP GET Connection");
       HttpsURLConnection httpsURLConnection = null;
@@ -237,6 +251,10 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
             }
           });
           httpsURLConnection.setSSLSocketFactory(sslContext.getSocketFactory());
+          //check for the authorization String
+          if(this.rAuthorization!="") {
+            httpsURLConnection.setRequestProperty("Authorization", "Bearer " + this.rAuthorization);
+          }
           httpsURLConnection.setRequestMethod("GET");
           httpsURLConnection.setConnectTimeout(30000);
           httpsURLConnection.setReadTimeout(30000);
@@ -276,6 +294,10 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
             }
           });
           httpsURLConnection.setSSLSocketFactory(sslContext.getSocketFactory());
+          //check for the authorization String
+          if(this.rAuthorization!="") {
+            httpsURLConnection.setRequestProperty("Authorization", "Bearer " + this.rAuthorization);
+          }
           httpsURLConnection.setRequestMethod("POST");
           httpsURLConnection.setConnectTimeout(30000);
           httpsURLConnection.setReadTimeout(30000);
