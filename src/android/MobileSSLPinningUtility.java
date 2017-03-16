@@ -58,6 +58,7 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
           //perform the GET request
           jsonObject.put("status", "success");
           jsonObject.put("response", this.performHTTPSGetConnection(sslContext, rUrl));
+          callbackContext.success(jsonObject);
           return true;
         }
         //check for POST request
@@ -67,17 +68,20 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
           //perform the GET request
           jsonObject.put("status", "success");
           jsonObject.put("response", this.performHTTPSPostConnection(sslContext, rUrl, rRequest));
+          callbackContext.success(jsonObject);
           return true;
         }
       }
       else {
         jsonObject.put("status", "failure");
         jsonObject.put("response", "Keystore does not exist");
+        callbackContext.success(jsonObject);
       }
     }
     else {
       jsonObject.put("status", "failure");
       jsonObject.put("response", "Keystore directory does not exist");
+      callbackContext.success(jsonObject);
     }
     return false;
   }
