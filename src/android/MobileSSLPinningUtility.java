@@ -224,6 +224,14 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
 
           //init https connection and return resposne
           httpsURLConnection = (HttpsURLConnection) requestedUrl.openConnection();
+          httpsURLConnection.setHostnameVerifier(new HostnameVerifier() {
+            @Override
+            public boolean verify(String hostname, SSLSession session) {
+              /*HostnameVerifier hv = HttpsURLConnection.getDefaultHostnameVerifier();
+              return hv.verify("*.myglobaldata.com", session);*/
+              return true;
+            }
+          });
           httpsURLConnection.setSSLSocketFactory(sslContext.getSocketFactory());
           httpsURLConnection.setRequestMethod("GET");
           httpsURLConnection.setConnectTimeout(30000);
