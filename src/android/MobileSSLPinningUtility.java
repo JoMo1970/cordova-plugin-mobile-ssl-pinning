@@ -231,7 +231,7 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
   }
 
   //this function will perform the http connection
-  private String performHTTPSGetConnection(SSLContext sslContext, String url, String hostName, String authJson) {
+  private String performHTTPSGetConnection(SSLContext sslContext, String url, String hostName) {
       //init https connection and jsonResponse object
       Log.d("INFO", "Performing HTTP GET Connection");
       HttpsURLConnection httpsURLConnection = null;
