@@ -45,6 +45,7 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
     String rFolder = args.getString(2);
     String rFile = args.getString(3);
     String rPassword = args.getString(4);
+    String rHostName = args.getString(5);
     JSONObject jsonObject = new JSONObject();
 
     //check to see if the installed directory exists
@@ -63,7 +64,7 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
           SSLContext sslContext = getSSLContext(resId, rPassword);
           //perform the GET request
           jsonObject.put("status", "success");
-          jsonObject.put("response", this.performHTTPSGetConnection(sslContext, rUrl));
+          jsonObject.put("response", this.performHTTPSGetConnection(sslContext, rUrl, rHostName));
           callbackContext.success(jsonObject);
           return true;
         }
@@ -74,7 +75,7 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
           SSLContext sslContext = getSSLContext(resId, rPassword);
           //perform the GET request
           jsonObject.put("status", "success");
-          jsonObject.put("response", this.performHTTPSPostConnection(sslContext, rUrl, rRequest));
+          jsonObject.put("response", this.performHTTPSPostConnection(sslContext, rUrl, rRequest, rHostName));
           callbackContext.success(jsonObject);
           return true;
         }
@@ -215,7 +216,7 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
   }
 
   //this function will perform the http connection
-  private String performHTTPSGetConnection(SSLContext sslContext, String url) {
+  private String performHTTPSGetConnection(SSLContext sslContext, String url, String hostName) {
       //init https connection and jsonResponse object
       Log.d("INFO", "Performing HTTP GET Connection");
       HttpsURLConnection httpsURLConnection = null;
@@ -229,9 +230,9 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
           httpsURLConnection.setHostnameVerifier(new HostnameVerifier() {
             @Override
             public boolean verify(String hostname, SSLSession session) {
-              /*HostnameVerifier hv = HttpsURLConnection.getDefaultHostnameVerifier();
-              return hv.verify("*.myglobaldata.com", session);*/
-              return true;
+              HostnameVerifier hv = HttpsURLConnection.getDefaultHostnameVerifier();
+              return hv.verify(hostName, session);
+              //return true;
             }
           });
           httpsURLConnection.setSSLSocketFactory(sslContext.getSocketFactory());
@@ -253,7 +254,7 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
   }
 
   //this function will perform the http connection
-  private String performHTTPSPostConnection(SSLContext sslContext, String url, String request) {
+  private String performHTTPSPostConnection(SSLContext sslContext, String url, String request, String hostName) {
       //init https connection and jsonResponse object
       Log.d("INFO", "Performing HTTP POST Connection");
       HttpsURLConnection httpsURLConnection = null;
@@ -269,7 +270,7 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
             @Override
             public boolean verify(String hostname, SSLSession session) {
               HostnameVerifier hv = HttpsURLConnection.getDefaultHostnameVerifier();
-              return hv.verify("*.myglobaldata.com", session);
+              return hv.verify(hostName, session);
               //return true;
             }
           });
