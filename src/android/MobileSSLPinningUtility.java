@@ -45,7 +45,7 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
     String rFolder = args.getString(2);
     String rFile = args.getString(3);
     String rPassword = args.getString(4);
-    String rHostName = args.getString(5);
+    private final String rHostName = args.getString(5);
     JSONObject jsonObject = new JSONObject();
 
     //check to see if the installed directory exists
