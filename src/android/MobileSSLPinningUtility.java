@@ -46,13 +46,17 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
     JSONObject jsonObject = new JSONObject();
 
     //check to see if the installed directory exists
+    Log.d("INFO", "Checking for " + rFolder + " in the app folder structure");
     Boolean directoryExists = this.containsRawClass(rFolder);
     if(directoryExists) {
       //check for the installed keystore by filename
+      Log.d("INFO", "Found " + rFolder + " in the app structure");
       int resId = this.ckKeystoreExists(rFile, this.getRawClass(rFolder));
       if(resId !=0) {
         //check for GET request
+        Log.d("INFO", "Found " + resId + " in the app structure");
         if (PERFORMGETREQUESTPARAM.equals(action)) {
+          Log.d("INFO", "Invoking " + action);
           //init the ssl context
           SSLContext sslContext = getSSLContext(resId, rPassword);
           //perform the GET request
@@ -63,6 +67,7 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
         }
         //check for POST request
         else if(PERFORMPOSTREQUESTPARAM.equals(action)) {
+          Log.d("INFO", "Invoking " + action);
           //init the ssl context
           SSLContext sslContext = getSSLContext(resId, rPassword);
           //perform the GET request
@@ -73,12 +78,14 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
         }
       }
       else {
+        Log.d("INFO", rFile + " does not exist in the app structure");
         jsonObject.put("status", "failure");
         jsonObject.put("response", "Keystore does not exist");
         callbackContext.success(jsonObject);
       }
     }
     else {
+      Log.d("INFO", rFolder + " does not exist in the app structure");
       jsonObject.put("status", "failure");
       jsonObject.put("response", "Keystore directory does not exist");
       callbackContext.success(jsonObject);
