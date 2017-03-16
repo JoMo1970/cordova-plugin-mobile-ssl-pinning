@@ -155,14 +155,14 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
       }
   }
 
-  //this function will perform post execution
+  /*//this function will perform post execution
   private void completeRequest(String response) throws JSONException {
       Log.d("INFO", "Request Completed: " + response);
       responseJSON.put("status", true);
       responseJSON.put("html", response);
       callback.success(responseJSON);
       Log.d("INFO", "Response sent back");
-  }
+  }*/
 
   //this function will init the ssl context
   private SSLContext getSSLContext(int resId, String password) {
@@ -284,7 +284,7 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
       }
   }
 
-  //this object will act as the payload for the asynctask
+  /*//this object will act as the payload for the asynctask
   private class AsyncPayload {
       private InputStream stream;
       private String password;
@@ -301,5 +301,5 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
       public String getPassword() {
           return this.password;
       }
-  }
+  }*/
 }
