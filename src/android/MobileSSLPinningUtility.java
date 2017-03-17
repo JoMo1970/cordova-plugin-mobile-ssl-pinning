@@ -343,6 +343,7 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
       }
   }
 
+  
   /*//this object will act as the payload for the asynctask
   private class AsyncPayload {
       private InputStream stream;
