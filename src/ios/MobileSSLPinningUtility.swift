@@ -35,7 +35,7 @@ import Security
         rUrl = command.argument(at: 0) as! String
         rRequest = command.argument(at: 1) as! String
         //rFolder = command.argument(at: 2) as! String
-        rFile = "*myglobaldatacom" //command.argument(at: 3) as! String
+        rFile = "myglobaldatacom" //command.argument(at: 3) as! String
         //rPassword = command.argument(at: 4) as! String
         //rHostName = command.argument(at: 5) as! String
         rAuthorization = command.argument(at: 6) as! String
@@ -45,7 +45,7 @@ import Security
         self.opQueue.isSuspended = true
         let sessionConfiguration = URLSessionConfiguration.default;
         sessionConfiguration.urlCache = nil
-        var token = rAuthorizationDictionary["access_token"] as! String
+        let token = rAuthorizationDictionary["access_token"] as! String
 
         //init session
         self.session = URLSession(configuration: sessionConfiguration, delegate: self, delegateQueue: self.opQueue)
@@ -96,25 +96,37 @@ import Security
         rUrl = command.argument(at: 0) as! String
         rRequest = command.argument(at: 1) as! String
         //rFolder = command.argument(at: 2) as! String
-        rFile = "*myglobaldatacom" //command.argument(at: 3) as! String
+        rFile = "myglobaldatacom" //command.argument(at: 3) as! String
         //rPassword = command.argument(at: 4) as! String
         //rHostName = command.argument(at: 5) as! String
         rAuthorization = command.argument(at: 6) as! String
+        var rAuthorizationDictionary = convertToDictionary(text: rAuthorization)!
 
         //clear cache
         self.opQueue.isSuspended = true
         let sessionConfiguration = URLSessionConfiguration.default;
         sessionConfiguration.urlCache = nil
 
+        //check if the authorization dictionary has values
+        var token: String = ""
+        if(rAuthorizationDictionary.values.count > 0) {
+            //grab the token
+            token = rAuthorizationDictionary["access_token"] as! String
+        }
+
         //init session
         self.session = URLSession(configuration: sessionConfiguration, delegate: self, delegateQueue: self.opQueue)
 
         //fire off the request
-        print("Performing POST Request")
+        print("Performing POST Request with request - " + rRequest)
         let url = URL(string: rUrl)
         var request = URLRequest(url: url!)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type");
+        //check if the token is found
+        if(!token.isEmpty) {
+            request.addValue("Bearer " + token, forHTTPHeaderField: "Authorization");
+        }
         request.httpBody = rRequest.data(using: .utf8)
         let task = session?.dataTask(with: request, completionHandler: { (data, response, error) in
             let result = NSString(data: data!, encoding: String.Encoding.ascii.rawValue)
