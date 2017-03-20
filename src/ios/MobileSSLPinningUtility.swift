@@ -110,7 +110,7 @@ import Security
         //rPassword = command.argument(at: 4) as! String
         //rHostName = command.argument(at: 5) as! String
         rAuthorization = command.argument(at: 6) as! String
-        var rAuthorizationDictionary = convertToDictionary(text: rAuthorization)!
+
 
         //clear cache
         self.opQueue.isSuspended = true
@@ -119,8 +119,9 @@ import Security
 
         //check if the authorization dictionary has values
         var token: String = ""
-        if(rAuthorizationDictionary.values.count > 0) {
+        if(!rAuthorization.isEmpty) {
             //grab the token
+            var rAuthorizationDictionary = convertToDictionary(text: rAuthorization)!
             token = rAuthorizationDictionary["access_token"] as! String
         }
 
