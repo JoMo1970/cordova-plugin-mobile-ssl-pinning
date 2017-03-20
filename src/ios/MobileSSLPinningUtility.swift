@@ -17,6 +17,8 @@ import Security
     var rPassword: String = "";
     var rHostName: String = "";
     var rAuthorization: String = "";
+    var rStartDate: String = "";
+    var rEndDate: String = "";
 
     //this struct is used to provide identity and trust mechanism for SSL connection
     public struct IdentityAndTrust {
@@ -40,6 +42,8 @@ import Security
         //rHostName = command.argument(at: 5) as! String
         rAuthorization = command.argument(at: 6) as! String
         var rAuthorizationDictionary = convertToDictionary(text: rAuthorization)!
+        rStartDate = command.argument(at: 7) as! String
+        rEndDate = command.argument(at: 8) as! String
 
         //clear cache
         self.opQueue.isSuspended = true
@@ -56,6 +60,12 @@ import Security
         var request = URLRequest(url: url!)
         request.httpMethod = "GET"
         request.addValue("Bearer " + token, forHTTPHeaderField: "Authorization");
+        //check if the start and end date values are empty
+        if(!rStartDate.isEmpty && !rEndDate.isEmpty) {
+            request.addValue(rStartDate, forHTTPHeaderField: "start_date");
+            request.addValue(rEndDate, forHTTPHeaderField: "end_date");
+        }
+
         //request.httpBody = rRequest.data(using: .utf8)
         let task = session?.dataTask(with: request, completionHandler: { (data, response, error) in
             let result = NSString(data: data!, encoding: String.Encoding.ascii.rawValue)
