@@ -37,6 +37,8 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
   private final String PERFORMPOSTREQUESTPARAM = "PostRequest";
   private String rHostName = "";
   private String rAuthorization = "";
+  String rStartDate = "";
+  String rEndDate = "";
 
 
   @Override
@@ -49,6 +51,8 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
     String rPassword = args.getString(4);
     this.rHostName = args.getString(5);
     this.rAuthorization = getJsonValue(args.getString(6), "access_token");
+    rStartDate = args.getString(7);
+    rEndDate = args.getString(8);
     JSONObject jsonObject = new JSONObject();
 
     //check to see if the installed directory exists
@@ -252,8 +256,13 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
           });
           httpsURLConnection.setSSLSocketFactory(sslContext.getSocketFactory());
           //check for the authorization String
-          if(this.rAuthorization!="") {
+          if(!this.rAuthorization.equals("")) {
             httpsURLConnection.setRequestProperty("Authorization", "Bearer " + this.rAuthorization);
+          }
+          //check for date variables - add headers if present
+          if(!this.rStartDate.equals("") && !this.rEndDate.equals("")) {
+            httpsURLConnection.setRequestProperty("start_date", this.rStartDate);
+            httpsURLConnection.setRequestProperty("end_date", this.rEndDate);
           }
           httpsURLConnection.setRequestMethod("GET");
           httpsURLConnection.setConnectTimeout(30000);
@@ -343,7 +352,7 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
       }
   }
 
-  
+
   /*//this object will act as the payload for the asynctask
   private class AsyncPayload {
       private InputStream stream;
