@@ -41,7 +41,6 @@ import Security
         //rPassword = command.argument(at: 4) as! String
         //rHostName = command.argument(at: 5) as! String
         rAuthorization = command.argument(at: 6) as! String
-        var rAuthorizationDictionary = convertToDictionary(text: rAuthorization)!
         rStartDate = command.argument(at: 7) as! String
         rEndDate = command.argument(at: 8) as! String
 
@@ -49,7 +48,15 @@ import Security
         self.opQueue.isSuspended = true
         let sessionConfiguration = URLSessionConfiguration.default;
         sessionConfiguration.urlCache = nil
-        let token = rAuthorizationDictionary["access_token"] as! String
+
+
+        //check if the authorization dictionary has values
+        var token: String = ""
+        if(!rAuthorization.isEmpty) {
+            //grab the token
+            var rAuthorizationDictionary = convertToDictionary(text: rAuthorization)!
+            token = rAuthorizationDictionary["access_token"] as! String
+        }
 
         //init session
         self.session = URLSession(configuration: sessionConfiguration, delegate: self, delegateQueue: self.opQueue)
