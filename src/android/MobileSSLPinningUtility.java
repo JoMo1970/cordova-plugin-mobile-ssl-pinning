@@ -249,6 +249,7 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
           httpsURLConnection.setHostnameVerifier(new HostnameVerifier() {
             @Override
             public boolean verify(String hostname, SSLSession session) {
+              Log.d("INFO", "Adding hosting verification");
               HostnameVerifier hv = HttpsURLConnection.getDefaultHostnameVerifier();
               return hv.verify(rHostName, session);
               //return true;
@@ -257,6 +258,7 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
           httpsURLConnection.setSSLSocketFactory(sslContext.getSocketFactory());
           //check for the authorization String
           if(!this.rAuthorization.equals("")) {
+            Log.d("INFO", "Adding token to header");
             httpsURLConnection.setRequestProperty("Authorization", "Bearer " + this.rAuthorization);
           }
           //check for date variables - add headers if present
