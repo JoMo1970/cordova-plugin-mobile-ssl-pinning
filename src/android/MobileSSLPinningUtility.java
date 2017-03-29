@@ -17,7 +17,7 @@ import android.util.Log;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.io.DataOutputStream;
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.security.KeyStore;
@@ -246,6 +246,7 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
 
           //init https connection and return resposne
           httpsURLConnection = (HttpsURLConnection) requestedUrl.openConnection();
+          httpsURLConnection.setRequestProperty("Content-Type", "application/json");
           httpsURLConnection.setHostnameVerifier(new HostnameVerifier() {
             @Override
             public boolean verify(String hostname, SSLSession session) {
@@ -270,8 +271,10 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
           httpsURLConnection.setAllowUserInteraction(true);
           httpsURLConnection.setUseCaches(false);
           httpsURLConnection.setRequestMethod("GET");
-          httpsURLConnection.setConnectTimeout(30000);
-          httpsURLConnection.setReadTimeout(30000);
+          httpsURLConnection.setConnectTimeout(1 * 60 * 1000);
+          httpsURLConnection.setDoOutput(true);
+          httpsURLConnection.setDoInput(true);
+          
           //returm the data
           String responseString = parseResponseStream(httpsURLConnection.getInputStream());
           Log.d("INFO", "Returning response from GET request - " + responseString);
@@ -300,7 +303,7 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
 
           //init https connection and return resposne
           httpsURLConnection = (HttpsURLConnection) requestedUrl.openConnection();
-          httpsURLConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+          httpsURLConnection.setRequestProperty("Content-Type", "application/json");
           httpsURLConnection.setHostnameVerifier(new HostnameVerifier() {
             @Override
             public boolean verify(String hostname, SSLSession session) {
@@ -320,16 +323,19 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
           httpsURLConnection.setAllowUserInteraction(true);
           httpsURLConnection.setUseCaches(false);
           httpsURLConnection.setRequestMethod("POST");
-          httpsURLConnection.setConnectTimeout(30000);
-          httpsURLConnection.setReadTimeout(30000);
+          httpsURLConnection.setConnectTimeout(1 * 60 * 1000);
           httpsURLConnection.setDoOutput(true);
           httpsURLConnection.setDoInput(true);
 
           //write the data to the server
           Log.d("INFO", "Writing POST body to stream");
-          OutputStream os = httpsURLConnection.getOutputStream();
-          os.write(request.getBytes("UTF-8"));
-          os.close();
+          //OutputStream os = httpsURLConnection.getOutputStream();
+          DataOutputStream out = new DataOutputStream(httpsURLConnection.getOutputStream());
+          out.write(request.getBytes());
+          out.close();
+
+          //init connection
+          httpsURLConnection.connect();
 
           //returm the data
           String responseString = parseResponseStream(httpsURLConnection.getInputStream());
