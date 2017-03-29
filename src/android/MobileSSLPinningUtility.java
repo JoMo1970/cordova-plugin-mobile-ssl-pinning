@@ -268,12 +268,10 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
             httpsURLConnection.setRequestProperty("end_date", this.rEndDate);
           }
           httpsURLConnection.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 4.01; Windows NT)");
-          httpsURLConnection.setAllowUserInteraction(true);
           httpsURLConnection.setUseCaches(false);
           httpsURLConnection.setRequestMethod("GET");
           httpsURLConnection.setConnectTimeout(1 * 60 * 1000);
           httpsURLConnection.setDoOutput(true);
-          httpsURLConnection.setDoInput(true);
 
           //returm the data
           String responseString = parseResponseStream(httpsURLConnection.getInputStream());
