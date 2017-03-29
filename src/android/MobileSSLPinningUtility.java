@@ -274,7 +274,7 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
           httpsURLConnection.setConnectTimeout(1 * 60 * 1000);
           httpsURLConnection.setDoOutput(true);
           httpsURLConnection.setDoInput(true);
-          
+
           //returm the data
           String responseString = parseResponseStream(httpsURLConnection.getInputStream());
           Log.d("INFO", "Returning response from GET request - " + responseString);
@@ -340,7 +340,7 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
           //returm the data
           String responseString = parseResponseStream(httpsURLConnection.getInputStream());
           Log.d("INFO", "Returning response from POST request - " + responseString);
-          return parseResponseStream(httpsURLConnection.getInputStream());
+          return responseString;
       } catch (Exception ex) {
           Log.d("INFO", ex.toString());
           return ex.toString();
@@ -356,7 +356,7 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
   //this function will parse out the returned stream
   private String parseResponseStream(InputStream stream) {
       try {
-          BufferedReader br = new BufferedReader(new InputStreamReader(stream, "UTF-8"), 4096);
+          BufferedReader br = new BufferedReader(new InputStreamReader(stream));
           StringBuilder sb = new StringBuilder();
           String line;
           while((line = br.readLine()) != null) {
@@ -367,7 +367,7 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
       }
       catch(Exception ex) {
           Log.d("INFO", "ERROR: " + ex.toString());
-          return "";
+          return ex.toString();
       }
   }
 
