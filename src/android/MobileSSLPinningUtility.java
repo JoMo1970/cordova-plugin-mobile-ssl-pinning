@@ -271,7 +271,7 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
           httpsURLConnection.setUseCaches(false);
           httpsURLConnection.setRequestMethod("GET");
           httpsURLConnection.setConnectTimeout(1 * 60 * 1000);
-          httpsURLConnection.setDoOutput(true);
+          httpsURLConnection.setDoOutput(false);
 
           //returm the data
           String responseString = parseResponseStream(httpsURLConnection.getInputStream());
