@@ -346,7 +346,7 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
   //this function will parse out the returned stream
   private String parseResponseStream(InputStream stream) {
       try {
-          BufferedReader br = new BufferedReader(new InputStreamReader(stream));
+          BufferedReader br = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
           StringBuilder sb = new StringBuilder();
           String line;
           while((line = br.readLine()) != null) {
