@@ -266,6 +266,7 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
             httpsURLConnection.setRequestProperty("start_date", this.rStartDate);
             httpsURLConnection.setRequestProperty("end_date", this.rEndDate);
           }
+          httpsURLConnection.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 4.01; Windows NT)");
           httpsURLConnection.setRequestMethod("GET");
           httpsURLConnection.setConnectTimeout(30000);
           httpsURLConnection.setReadTimeout(30000);
@@ -313,6 +314,7 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
             Log.d("INFO", "Adding token to header");
             httpsURLConnection.setRequestProperty("Authorization", "Bearer " + this.rAuthorization);
           }
+          httpsURLConnection.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 4.01; Windows NT)");
           httpsURLConnection.setRequestMethod("POST");
           httpsURLConnection.setConnectTimeout(30000);
           httpsURLConnection.setReadTimeout(30000);
