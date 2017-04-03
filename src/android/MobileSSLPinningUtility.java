@@ -15,6 +15,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.DataOutputStream;
@@ -322,7 +323,9 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
           httpsURLConnection.setUseCaches(false);
           httpsURLConnection.setRequestMethod("POST");
           httpsURLConnection.setConnectTimeout(1 * 60 * 1000);
-          httpsURLConnection.setDoOutput(true);
+          httpsURLConnection.setRequestProperty("Accept", "*/*");
+          httpsURLConnection.setInstanceFollowRedirects(false);
+          httpsURLConnection.setDoOutput(false);
           httpsURLConnection.setDoInput(true);
 
           //write the data to the server
@@ -336,10 +339,18 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
           httpsURLConnection.connect();
 
           //returm the data
-          String responseString = parseResponseStream(httpsURLConnection.getInputStream());
-          Log.d("INFO", "Returning response from POST request - " + responseString);
+          int statusCode = httpsURLConnection.getResponseCode();
+          String responseString = "";
+          if(statusCode==200) {
+              responseString = parseResponseStream(httpsURLConnection.getInputStream());
+              Log.d("INFO", "Returning response from POST request - " + responseString);
+          }
+          else{
+              responseString = parseResponseStream(httpsURLConnection.getErrorStream());
+          }
           return responseString;
-      } catch (Exception ex) {
+      }
+      catch (Exception ex) {
           Log.d("INFO", ex.toString());
           return ex.toString();
       }
@@ -358,14 +369,20 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
           StringBuilder sb = new StringBuilder();
           String line;
           while((line = br.readLine()) != null) {
-              sb.append(line + "\n");
+              sb.append(line);
           }
           br.close();
           return sb.toString();
       }
+      catch(IOException io) {
+          String err = io.toString();
+          Log.d("INFO", "ERROR: " + err);
+          return err;
+      }
       catch(Exception ex) {
-          Log.d("INFO", "ERROR: " + ex.toString());
-          return ex.toString();
+          String err = ex.toString();
+          Log.d("INFO", "ERROR: " + err);
+          return err;
       }
   }
 
