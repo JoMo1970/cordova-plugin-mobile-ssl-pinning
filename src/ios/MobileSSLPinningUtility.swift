@@ -50,13 +50,13 @@ import Security
         sessionConfiguration.urlCache = nil
 
 
-        //check if the authorization dictionary has values
+        /*//check if the authorization dictionary has values
         var token: String = ""
         if(!rAuthorization.isEmpty) {
             //grab the token
             var rAuthorizationDictionary = convertToDictionary(text: rAuthorization)!
             token = rAuthorizationDictionary["access_token"] as! String
-        }
+        }*/
 
         //init session
         self.session = URLSession(configuration: sessionConfiguration, delegate: self, delegateQueue: self.opQueue)
@@ -66,7 +66,8 @@ import Security
         let url = URL(string: rUrl)
         var request = URLRequest(url: url!)
         request.httpMethod = "GET"
-        request.addValue("Bearer " + token, forHTTPHeaderField: "Authorization");
+        //request.addValue("Bearer " + token, forHTTPHeaderField: "Authorization");
+        request.addValue("Bearer " + rAuthorization, forHTTPHeaderField: "Authorization");
         //check if the start and end date values are empty
         if(!rStartDate.isEmpty && !rEndDate.isEmpty) {
             request.addValue(rStartDate, forHTTPHeaderField: "start_date");
@@ -124,13 +125,13 @@ import Security
         let sessionConfiguration = URLSessionConfiguration.default;
         sessionConfiguration.urlCache = nil
 
-        //check if the authorization dictionary has values
+        /*//check if the authorization dictionary has values
         var token: String = ""
         if(!rAuthorization.isEmpty) {
             //grab the token
             var rAuthorizationDictionary = convertToDictionary(text: rAuthorization)!
             token = rAuthorizationDictionary["access_token"] as! String
-        }
+        }*/
 
         //init session
         self.session = URLSession(configuration: sessionConfiguration, delegate: self, delegateQueue: self.opQueue)
@@ -142,7 +143,7 @@ import Security
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type");
         //check if the token is found
-        if(!token.isEmpty) {
+        if(!rAuthorization.isEmpty) {
             request.addValue("Bearer " + token, forHTTPHeaderField: "Authorization");
         }
         request.httpBody = rRequest.data(using: .utf8)

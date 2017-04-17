@@ -51,7 +51,7 @@ public class MobileSSLPinningUtility extends CordovaPlugin {
     String rFile = args.getString(3);
     String rPassword = args.getString(4);
     this.rHostName = args.getString(5);
-    this.rAuthorization = getJsonValue(args.getString(6), "access_token");
+    this.rAuthorization = args.getString(6); //getJsonValue(args.getString(6), "access_token");
     rStartDate = args.getString(7);
     rEndDate = args.getString(8);
     JSONObject jsonObject = new JSONObject();
