@@ -144,7 +144,7 @@ import Security
         request.addValue("application/json", forHTTPHeaderField: "Content-Type");
         //check if the token is found
         if(!rAuthorization.isEmpty) {
-            request.addValue("Bearer " + token, forHTTPHeaderField: "Authorization");
+            request.addValue("Bearer " + rAuthorization, forHTTPHeaderField: "Authorization");
         }
         request.httpBody = rRequest.data(using: .utf8)
         let task = session?.dataTask(with: request, completionHandler: { (data, response, error) in
