@@ -74,25 +74,28 @@ import Security
             request.addValue(rEndDate, forHTTPHeaderField: "end_date");
         }
 
-        //request.httpBody = rRequest.data(using: .utf8)
+        //init the task and invoke
         let task = session?.dataTask(with: request, completionHandler: { (data, response, error) in
-            let result = NSString(data: data!, encoding: String.Encoding.ascii.rawValue)
-            let urlResponse = response as? HTTPURLResponse;
-            print("result: \(result)")
-            print("response: \(response)")
-            print("error: \(error)")
-
-            //init plugin result
-            //let jsonResponseDictionary = self.convertToDictionary(text: (response?.description)!);
-            let response: Dictionary = [ "status" : "success", "response" : result ] as [String : Any]
-            let pluginResult = CDVPluginResult(
-                status: CDVCommandStatus_OK,
-                messageAs: response
-            )
-            self.commandDelegate!.send(
-                pluginResult,
-                callbackId: command.callbackId
-            )
+            print("Get task as completed");
+            //check for error
+            if(error != nil) {
+                print(error!);
+            }
+            else {
+                print("Get task response is normal. Processing response")
+                //check if the result is null
+                var responseDictionary: Dictionary = [ "status" : "success", "response" : nil ] as [String : Any]
+                if let result = String(data: data!, encoding: .utf8) {
+                    //set the response with data
+                    responseDictionary = [ "status" : "success", "response" : result ] as [String : Any]
+                }
+                //init the plugin result and send the response
+                let pluginResult = CDVPluginResult(
+                    status: CDVCommandStatus_OK,
+                    messageAs: responseDictionary
+                )
+                self.commandDelegate!.send(pluginResult,callbackId: command.callbackId)
+            }
         })
         task?.resume()
 
@@ -147,24 +150,29 @@ import Security
             request.addValue("Bearer " + rAuthorization, forHTTPHeaderField: "Authorization");
         }
         request.httpBody = rRequest.data(using: .utf8)
-        let task = session?.dataTask(with: request, completionHandler: { (data, response, error) in
-            let result = NSString(data: data!, encoding: String.Encoding.ascii.rawValue)
-            let urlResponse = response as? HTTPURLResponse;
-            print("result: \(result)")
-            print("response: \(response)")
-            print("error: \(error)")
 
-            //init plugin result
-            //let jsonResponseDictionary = self.convertToDictionary(text: (response?.description)!);
-            let response: Dictionary = [ "status" : "success", "response" : result ] as [String : Any]
-            let pluginResult = CDVPluginResult(
-                status: CDVCommandStatus_OK,
-                messageAs: response
-            )
-            self.commandDelegate!.send(
-                pluginResult,
-                callbackId: command.callbackId
-            )
+        //init the task and invoke
+        let task = session?.dataTask(with: request, completionHandler: { (data, response, error) in
+            print("Post task as completed");
+            //check for error
+            if(error != nil) {
+                print(error!);
+            }
+            else {
+                print("Post task response is normal. Processing response")
+                //check if the result is null
+                var responseDictionary: Dictionary = [ "status" : "success", "response" : nil ] as [String : Any]
+                if let result = String(data: data!, encoding: .utf8) {
+                    //set the response with data
+                    responseDictionary = [ "status" : "success", "response" : result ] as [String : Any]
+                }
+                //init the plugin result and send the response
+                let pluginResult = CDVPluginResult(
+                    status: CDVCommandStatus_OK,
+                    messageAs: responseDictionary
+                )
+                self.commandDelegate!.send(pluginResult,callbackId: command.callbackId)
+            }
         })
         task?.resume()
 
