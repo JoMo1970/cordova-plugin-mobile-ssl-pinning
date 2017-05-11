@@ -37,7 +37,7 @@ import Security
         rUrl = command.argument(at: 0) as! String
         rRequest = command.argument(at: 1) as! String
         //rFolder = command.argument(at: 2) as! String
-        rFile = "myglobaldatacom" //command.argument(at: 3) as! String
+        rFile = "wordwareinc" //command.argument(at: 3) as! String
         //rPassword = command.argument(at: 4) as! String
         //rHostName = command.argument(at: 5) as! String
         rAuthorization = command.argument(at: 6) as! String
