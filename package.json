@@ -1,0 +1,19 @@
+{
+  "name": "cordova-plugin-mobile-ssl-pinning",
+  "version": "1.0.0",
+  "description": "This plugin is used to perform trust for SSL certificates that are not trusted for whatever reason. This plugin is used for Android and iOS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JoMo1970/cordova-plugin-mobile-ssl-pinning.git"
+  },
+  "author": "John Moline",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JoMo1970/cordova-plugin-mobile-ssl-pinning/issues"
+  },
+  "homepage": "https://github.com/JoMo1970/cordova-plugin-mobile-ssl-pinning#readme"
+}
